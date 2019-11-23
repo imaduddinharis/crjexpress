@@ -1,18 +1,19 @@
 <?php
 
-require_once('Res.php');
+require_once(APPPATH .'controllers\Res.php');
 
-Class User extends CI_Controller{
+Class Dashboard extends CI_Controller{
 
     var $API ="";
+    var $asset ="";
 
     function __construct() {
         parent::__construct();
         
         /* API Host */
         $res = new Res();
-        $this->API= $res->getApi();
-        
+        $this->API = $res->getApi();
+
         /* Library */
         $this->load->library('session');
         $this->load->library('curl');
@@ -20,13 +21,23 @@ Class User extends CI_Controller{
         /* Helper */
         $this->load->helper('form');
         $this->load->helper('url');
+        $this->load->helper('path');
+
+        /* Asset */
+        $this->asset = base_url().'assets/';
+        
     }
 
     // menampilkan data kontak
     function index(){
-        $user = json_decode($this->curl->simple_get($this->API.'user'));
-        // $this->load->view('kontak/list',$data);
-        var_dump($user->result);
+        $data['title'] = 'Dashboard';
+        $data['asset'] = $this->asset;
+        
+        // $data['header']=$this->load->view('templates/header',$data, true);
+        $data['content']=$this->load->view('company/dashboard/index',$data, true);
+        // $data['footer']=$this->load->view('templates/footer',$data, true);
+		
+        $this->load->view('company/template/index',$data);
     }
 
     // insert data kontak
