@@ -4,16 +4,16 @@ class Res
 {
 
     private $API = '';
-    private $SERVER = 'DEVELOPMENT';
+    private $SERVER = 'HOSTING';
 
     public function getApi()
     {
-        if($this->SERVER == 'DEVELOPMENT'):
-            $this->API = 'http://localhost/project/development/ekspedisimore/api/';
-        elseif($this->SERVER == 'PRODUCTION'):
-            $this->API = 'http://localhost/project/development/ekspedisimore/api/';
+        if($this->SERVER == 'LOCAL'):
+            $this->API = 'http://localhost:9000/';
+        elseif($this->SERVER == 'HOSTING'):
+            $this->API = 'https://api.crjexpress.id/';
         else:
-            $this->API = 'http://localhost/project/development/ekspedisimore/api/';
+            $this->API = 'http://localhost:9000/';
         endif;
 
         return $this->API;
