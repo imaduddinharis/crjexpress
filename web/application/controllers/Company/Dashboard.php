@@ -1,6 +1,6 @@
 <?php
 
-require_once(APPPATH .'controllers\Res.php');
+require_once(APPPATH .'controllers/Res.php');
 
 Class Dashboard extends CI_Controller{
 
@@ -26,6 +26,10 @@ Class Dashboard extends CI_Controller{
         /* Asset */
         $this->asset = base_url().'assets/';
         
+        /* Authentication */
+        if($this->session->userdata('IS_LOGIN') == FALSE){
+            redirect(base_url());
+        }
     }
 
     // menampilkan data kontak

@@ -55,7 +55,7 @@
             <div class=" dropdown-header noti-title">
               <h6 class="text-overflow m-0">Welcome!</h6>
             </div>
-            <a href="./examples/profile.html" class="dropdown-item">
+            <!-- <a href="./examples/profile.html" class="dropdown-item">
               <i class="ni ni-single-02"></i>
               <span>My profile</span>
             </a>
@@ -70,9 +70,9 @@
             <a href="./examples/profile.html" class="dropdown-item">
               <i class="ni ni-support-16"></i>
               <span>Support</span>
-            </a>
+            </a> -->
             <div class="dropdown-divider"></div>
-            <a href="#!" class="dropdown-item">
+            <a href="<?=base_url()?>auth/logout" class="dropdown-item">
               <i class="ni ni-user-run"></i>
               <span>Logout</span>
             </a>
@@ -98,7 +98,7 @@
           </div>
         </div>
         <!-- Form -->
-        <form class="mt-4 mb-3 d-md-none">
+        <!-- <form class="mt-4 mb-3 d-md-none">
           <div class="input-group input-group-rounded input-group-merge">
             <input type="search" class="form-control form-control-rounded form-control-prepended" placeholder="Search" aria-label="Search">
             <div class="input-group-prepend">
@@ -107,41 +107,41 @@
               </div>
             </div>
           </div>
-        </form>
+        </form> -->
         <!-- Navigation -->
         <ul class="navbar-nav">
           <li class="nav-item  class=" active" ">
-          <a class=" nav-link active " href=" ./index.html"> <i class="ni ni-tv-2 text-primary"></i> Dashboard
+          <a class=" nav-link active " href="<?=base_url()?>"> <i class="ni ni-tv-2 text-primary"></i> Dashboard
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link " href="./examples/icons.html">
-              <i class="ni ni-planet text-blue"></i> Icons
+            <a class="nav-link " href="<?=base_url()?>dev">
+              <i class="ni ni-planet text-blue"></i> Manage User
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link " href="./examples/maps.html">
-              <i class="ni ni-pin-3 text-orange"></i> Maps
+            <a class="nav-link " href="<?=base_url()?>dev">
+              <i class="ni ni-pin-3 text-orange"></i> Employee
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link " href="./examples/profile.html">
-              <i class="ni ni-single-02 text-yellow"></i> User profile
+            <a class="nav-link " href="<?=base_url()?>dev">
+              <i class="ni ni-single-02 text-yellow"></i> Package
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link " href="./examples/tables.html">
-              <i class="ni ni-bullet-list-67 text-red"></i> Tables
+            <a class="nav-link " href="<?=base_url()?>dev">
+              <i class="ni ni-bullet-list-67 text-red"></i> Status
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="./examples/login.html">
-              <i class="ni ni-key-25 text-info"></i> Login
+            <a class="nav-link" href="<?=base_url()?>dev">
+              <i class="ni ni-key-25 text-info"></i> Company
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="./examples/register.html">
-              <i class="ni ni-circle-08 text-pink"></i> Register
+            <a class="nav-link" href="<?=base_url()?>dev">
+              <i class="ni ni-circle-08 text-pink"></i> Service
             </a>
           </li>
         </ul>
@@ -152,18 +152,18 @@
         <!-- Navigation -->
         <ul class="navbar-nav mb-md-3">
           <li class="nav-item">
-            <a class="nav-link" href="https://demos.creative-tim.com/argon-dashboard/docs/getting-started/overview.html">
-              <i class="ni ni-spaceship"></i> Getting started
+            <a class="nav-link" target="_blank" href="https://documenter.getpostman.com/view/4364954/SW7bzmeV">
+              <i class="ni ni-spaceship"></i> API Doc
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="https://demos.creative-tim.com/argon-dashboard/docs/foundation/colors.html">
-              <i class="ni ni-palette"></i> Foundation
+            <a class="nav-link" target="_blank" href="https://github.com/imaduddinharis/crjexpress">
+              <i class="ni ni-palette"></i> Github
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="https://demos.creative-tim.com/argon-dashboard/docs/components/alerts.html">
-              <i class="ni ni-ui-04"></i> Components
+            <a class="nav-link" href="https://crjexpress.id">
+              <i class="ni ni-ui-04"></i> CRJExpress
             </a>
           </li>
         </ul>
@@ -177,7 +177,7 @@
         <!-- Brand -->
         <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="./index.html">Dashboard</a>
         <!-- Form -->
-        <form class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
+        <!-- <form class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
           <div class="form-group mb-0">
             <div class="input-group input-group-alternative">
               <div class="input-group-prepend">
@@ -186,25 +186,26 @@
               <input class="form-control" placeholder="Search" type="text">
             </div>
           </div>
-        </form>
+        </form> -->
         <!-- User -->
         <ul class="navbar-nav align-items-center d-none d-md-flex">
           <li class="nav-item dropdown">
             <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <div class="media align-items-center">
                 <span class="avatar avatar-sm rounded-circle">
-                  <img alt="Image placeholder" src="<?=$asset?>img/theme/team-4-800x800.jpg">
+                  <!-- <img alt="Image placeholder" src="<?=$asset?>img/theme/team-4-800x800.jpg"> -->
+                  <i class="fas fa-user"></i>
                 </span>
                 <div class="media-body ml-2 d-none d-lg-block">
-                  <span class="mb-0 text-sm  font-weight-bold">Jessica Jones</span>
+                  <span class="mb-0 text-sm  font-weight-bold"><?=$this->session->userdata('SESS_DATA')['username']?></span>
                 </div>
               </div>
             </a>
             <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-right">
               <div class=" dropdown-header noti-title">
-                <h6 class="text-overflow m-0">Welcome!</h6>
+                <h5 class="text-overflow m-0">CRJExpress</h5>
               </div>
-              <a href="./examples/profile.html" class="dropdown-item">
+              <!-- <a href="./examples/profile.html" class="dropdown-item">
                 <i class="ni ni-single-02"></i>
                 <span>My profile</span>
               </a>
@@ -219,9 +220,9 @@
               <a href="./examples/profile.html" class="dropdown-item">
                 <i class="ni ni-support-16"></i>
                 <span>Support</span>
-              </a>
+              </a> -->
               <div class="dropdown-divider"></div>
-              <a href="#!" class="dropdown-item">
+              <a href="<?=base_url()?>auth/logout" class="dropdown-item">
                 <i class="ni ni-user-run"></i>
                 <span>Logout</span>
               </a>
@@ -238,7 +239,7 @@
         <div class="row align-items-center justify-content-xl-between">
           <div class="col-xl-6">
             <div class="copyright text-center text-xl-left text-muted">
-              &copy; 2018 <a href="https://www.creative-tim.com" class="font-weight-bold ml-1" target="_blank">Creative Tim</a>
+            © <?=date('Y')?> <a href="https://www.creative-tim.com" class="font-weight-bold ml-1" target="_blank">CRJExpress IT</a>
             </div>
           </div>
           <div class="col-xl-6">
