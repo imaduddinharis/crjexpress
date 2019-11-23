@@ -25,6 +25,11 @@ Class Routing extends CI_Controller{
 
     // menampilkan data kontak
     function index(){
-        redirect(base_url().'dashboard');
+        if($this->session->userdata('IS_LOGIN') == TRUE){
+            redirect(base_url().'dashboard');
+        }else{
+            redirect(base_url().'auth');
+        }
+        
     }
 }
