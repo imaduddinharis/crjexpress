@@ -19,12 +19,68 @@ class User extends REST_Controller {
         $id = $this->get('id');
         $code = '';
         if ($id == '') {
-            $response_data = $this->db->get('users')->result();
+            $this->db->where_not_in('users.role','superuser');
+            $this->db->select('users.username,
+                                users.email,
+                                users.role,
+                                users.id_users,
+                                employees.id_employees,
+                                employees_detail.fullname,
+                                employees_detail.address,
+                                employees_detail.phone_number,
+                                employees.position,
+                                employees_detail.photo,
+                                employees.branch_office,
+                                village.name as office_village,
+                                district.name as office_district,
+                                city.name as office_city,
+                                province.name as office_province,
+                                users.created_at,
+                                users.updated_at
+                                ');
+            $this->db->from('users');
+            $this->db->join('employees', 'employees.username = users.username', 'left');
+            $this->db->join('employees_detail', 'employees_detail.id_employees = employees.id_employees', 'left');
+            $this->db->join('branch_offices', 'branch_offices.id_branch_offices = employees.branch_office', 'left');
+            $this->db->join('province', 'province.id_province = branch_offices.province', 'left');
+            $this->db->join('city', 'city.id_city = branch_offices.city', 'left');
+            $this->db->join('district', 'district.id_district = branch_offices.district', 'left');
+            $this->db->join('village', 'village.id_village = branch_offices.village', 'left');
+            $this->db->order_by('users.created_at','DESC');
+            $response_data = $this->db->get()->result();
         } else {
-            $this->db->where('id_users', $id);
-            $response_data = $this->db->get('users')->result();
+            $this->db->where('users.id_users', $id);
+            $this->db->where_not_in('users.role','superuser');
+            $this->db->select('users.username,
+                                users.email,
+                                users.role,
+                                users.id_users,
+                                employees.id_employees,
+                                employees_detail.fullname,
+                                employees_detail.address,
+                                employees_detail.phone_number,
+                                employees.position,
+                                employees_detail.photo,
+                                employees.branch_office,
+                                village.name as office_village,
+                                district.name as office_district,
+                                city.name as office_city,
+                                province.name as office_province,
+                                users.created_at,
+                                users.updated_at
+                                ');
+            $this->db->from('users');
+            $this->db->join('employees', 'employees.username = users.username', 'left');
+            $this->db->join('employees_detail', 'employees_detail.id_employees = employees.id_employees', 'left');
+            $this->db->join('branch_offices', 'branch_offices.id_branch_offices = employees.branch_office', 'left');
+            $this->db->join('province', 'province.id_province = branch_offices.province', 'left');
+            $this->db->join('city', 'city.id_city = branch_offices.city', 'left');
+            $this->db->join('district', 'district.id_district = branch_offices.district', 'left');
+            $this->db->join('village', 'village.id_village = branch_offices.village', 'left');
+            $this->db->order_by('users.created_at','DESC');
+            $response_data = $this->db->get()->result();
         }
-        if(count($response_data)>1){
+        if(count($response_data)>0){
             $code = 'DSC1';
         }else{
             $code = 'DSC0';
@@ -35,16 +91,30 @@ class User extends REST_Controller {
     // POST:user
     function index_post() {
         $code = '';
-        $role = array('superuser','admin','manager','kurir');
+        $role = array('agent','manager','courier');
         if(in_array($this->post('role'),$role)){
-            $data = array(
+            $data['account'] = array(
                         'username'  => $this->post('username'),
                         'password'  => md5($this->post('password')),
                         'email'     => $this->post('email'),
                         'role'      => $this->post('role')
                     );
-            $insert = $this->db->insert('users', $data);
-            if ($insert) {
+            $insert_account = $this->db->insert('users', $data['account']);
+            $data['employees'] = array(
+                        'username'      => $this->post('username'),
+                        'branch_office' => $this->post('branch_office'),
+                        'position'      => $this->post('role')
+                    );
+            $insert_employees = $this->db->insert('employees', $data['employees']);
+            $id_employees = $this->db->insert_id();
+            $data['employees_detail'] = array(
+                        'id_employees'  => $id_employees,
+                        'fullname'      => $this->post('fullname'),
+                        'address'       => $this->post('address'),
+                        'phone_number'  => $this->post('phone_number')
+                    );
+            $insert_employees_detail = $this->db->insert('employees_detail', $data['employees_detail']);
+            if ($insert_account && $insert_employees && $insert_employees_detail) {
                 $code = 'PDS1';
                 $this->response(array('status' => $code, 'result' => $data, 200));
             } else {
@@ -61,7 +131,7 @@ class User extends REST_Controller {
     function index_put() {
         $code = '';
         $id = $this->put('id');
-        $role = array('superuser','admin','manager','kurir');
+        $role = array('agent','manager','courier');
         if(in_array($this->put('role'),$role)){
             $data = array(
                     'username'  => $this->put('username'),
