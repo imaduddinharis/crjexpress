@@ -53,8 +53,32 @@ $route['default_controller'] = 'routing';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 $route['dev'] = 'dev';
+$route['dev/sync'] = 'dev/sync';
 
 $route['auth'] = 'auth';
 $route['auth/login'] = 'auth/login';
 
 $route['dashboard'] = 'Company/dashboard';
+
+$route['package'] = 'Company/package';
+$route['package/detail/(:num)'] = 'Company/package/detail/$1';
+$route['package/new-package'] = 'Company/package/add';
+$route['package/create'] = 'Company/package/create';
+$route['package/invoice/(:any)'] = 'Company/package/invoice/$1';
+
+$route['manage-user'] = 'Company/user';
+$route['manage-user/add'] = 'Company/user/add';
+$route['manage-user/detal/(:num)'] = 'Company/user/detail/$1';
+$route['manage-user/create'] = 'Company/user/create';
+
+$route['price-rules'] = 'Company/price';
+$route['price-rules/location'] = 'Company/price/location';
+$route['price-rules/location/add'] = 'Company/price/location_add';
+$route['price-rules/location/create'] = 'Company/price/location_create';
+$route['price-rules/service'] = 'Company/price/service';
+$route['price-rules/service/add'] = 'Company/price/service_add';
+$route['price-rules/service/create'] = 'Company/price/service_create';
+
+$route['branch-office'] = 'Company/branch_office';
+$route['branch-office/add'] = 'Company/branch_office/add';
+$route['branch-office/create'] = 'Company/branch_office/create';
