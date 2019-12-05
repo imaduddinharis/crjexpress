@@ -5,6 +5,7 @@ require_once(APPPATH .'controllers/Res.php');
 Class Auth extends CI_Controller{
 
     var $API ="";
+    var $APIKey ="";
     var $asset ="";
 
     function __construct() {
@@ -13,6 +14,7 @@ Class Auth extends CI_Controller{
         /* API Host */
         $res = new Res();
         $this->API = $res->getApi();
+        $this->APIKey = $res->getApiKey();
 
         /* Library */
         $this->load->library('session');
@@ -53,16 +55,19 @@ Class Auth extends CI_Controller{
             $data = array(
                 'username'  =>  $this->input->post('username'),
                 'password'  =>  $this->input->post('password'));
+            $this->curl->http_header('APIKey',$this->APIKey);
             $login =  $this->curl->simple_post($this->API.'auth', $data, array(CURLOPT_BUFFERSIZE => 10));
             $login = json_decode($login);
-            
+            // var_dump($login);
+            // return false;
             if($login->status == 'BAS1')
             {
                 $data = array(
-                    'status'    => $login->status,
-                    'token'     => $login->token,
-                    'username'  => $login->result[0]->username,
-                    'role'      => $login->result[0]->role
+                    'status'        => $login->status,
+                    'token'         => $login->token,
+                    'username'      => $login->result->account[0]->username,
+                    'role'          => $login->result->account[0]->role,
+                    'branch_office' => $login->result->detail[0]->branch_office
                 );
                 $this->session->set_userdata('SESS_DATA',$data);
                 $this->session->set_userdata('IS_LOGIN',TRUE);
