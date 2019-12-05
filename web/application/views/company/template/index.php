@@ -16,6 +16,7 @@
   <link href="<?=$asset?>js/plugins/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet" />
   <!-- CSS Files -->
   <link href="<?=$asset?>css/argon-dashboard.css?v=1.1.0" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" type="text/css">
 </head>
 
 <body class="">
@@ -114,36 +115,35 @@
           <a class=" nav-link active " href="<?=base_url()?>"> <i class="ni ni-tv-2 text-primary"></i> Dashboard
             </a>
           </li>
+          <?php if($this->session->userdata('SESS_DATA')['role']== 'superuser' || $this->session->userdata('SESS_DATA')['role']== 'manager'):?>
           <li class="nav-item">
-            <a class="nav-link " href="<?=base_url()?>dev">
-              <i class="ni ni-planet text-blue"></i> Manage User
+            <a class="nav-link " href="<?=base_url()?>manage-user">
+              <i class="fas fa-users text-blue"></i> Manage User
+            </a>
+          </li>
+          <?php endif;?>
+          <li class="nav-item">
+            <a class="nav-link " href="<?=base_url()?>package">
+              <i class="ni ni-app text-blue"></i> Package
+            </a>
+          </li>
+          <?php if($this->session->userdata('SESS_DATA')['role']== 'superuser' || $this->session->userdata('SESS_DATA')['role']== 'manager'):?>
+          <li class="nav-item">
+            <a class="nav-link " href="<?=base_url()?>price-rules/location">
+              <i class="ni ni-square-pin text-red"></i> Price by Location
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link " href="<?=base_url()?>dev">
-              <i class="ni ni-pin-3 text-orange"></i> Employee
+            <a class="nav-link " href="<?=base_url()?>price-rules/service">
+              <i class="fas fa-truck text-red"></i> Price by Service
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link " href="<?=base_url()?>dev">
-              <i class="ni ni-single-02 text-yellow"></i> Package
+            <a class="nav-link" href="<?=base_url()?>branch-office">
+              <i class="fas fa-building text-red"></i> Branch Office
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link " href="<?=base_url()?>dev">
-              <i class="ni ni-bullet-list-67 text-red"></i> Status
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="<?=base_url()?>dev">
-              <i class="ni ni-key-25 text-info"></i> Company
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="<?=base_url()?>dev">
-              <i class="ni ni-circle-08 text-pink"></i> Service
-            </a>
-          </li>
+          <?php endif;?>
         </ul>
         <!-- Divider -->
         <hr class="my-3">
@@ -175,7 +175,7 @@
     <nav class="navbar navbar-top navbar-expand-md navbar-dark" id="navbar-main">
       <div class="container-fluid">
         <!-- Brand -->
-        <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="./index.html">Dashboard</a>
+        <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="./../"><?=$title?></a>
         <!-- Form -->
         <!-- <form class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
           <div class="form-group mb-0">
@@ -271,12 +271,24 @@
   <!--   Argon JS   -->
   <script src="<?=$asset?>js/argon-dashboard.min.js?v=1.1.0"></script>
   <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  
+  <script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/select/1.2.6/js/dataTables.select.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js" type="text/javascript" ></script>
   <script>
-    window.TrackJS &&
-      TrackJS.install({
-        token: "ee6fab19c5a04ac1a32a645abde4613a",
-        application: "argon-dashboard-free"
-      });
+  $(document).ready( function () {
+      if($('#table_id').length>0){
+        $('#table_id').DataTable();
+      }
+  } );
+  </script>
+
+  <script>
+    // window.TrackJS &&
+    //   TrackJS.install({
+    //     token: "ee6fab19c5a04ac1a32a645abde4613a",
+    //     application: "argon-dashboard-free"
+    //   });
   </script>
 </body>
 
