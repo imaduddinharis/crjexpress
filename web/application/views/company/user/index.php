@@ -31,7 +31,7 @@
                                                 <th>Position</th>
                                                 <th>Office</th>
                                                 <th>Office Address</th>
-                                                <th>Last Update</th>
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody style="color:#333">
@@ -43,8 +43,15 @@
                                                 <td><?=$data->fullname?></td>
                                                 <td><?=$data->position?></td>
                                                 <td><?=$data->branch_office?></td>
-                                                <td><?=$data->office_village?>, <?=$data->office_district?>, <?=$data->office_city?>, <?=$data->office_province?></td>
-                                                <td><?=$data->updated_at?></td>
+                                                <td><?=$data->office_district?>, <?=$data->office_city?></td>
+                                                <td class="text-right">
+                                                <!-- <span class="text-primary"><a href="#"><i class="fa fa-edit"></i></a></span> -->
+                                                <form method="post" action="<?=base_url()?>manage-user/delete" onsubmit="return confirm('are you sure delete this user?');">
+                                                <input type="hidden" value="<?=$data->id_users?>" name="id_users">
+                                                <input type="hidden" value="<?=$data->id_employees?>" name="id_employees">
+                                                <button type="submit" name="delete" style="cursor:pointer"><i class="fa fa-trash"></i></button>
+                                                </form>
+                                                </td>
                                             </tr>
                                             <?php 
                                             $no++;

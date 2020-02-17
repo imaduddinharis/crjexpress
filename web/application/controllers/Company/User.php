@@ -139,19 +139,16 @@ Class User extends CI_Controller{
     }
 
     // delete data kontak
-    function delete($id){
-        if(empty($id)){
-            redirect('kontak');
+    function delete(){
+        if(isset($_POST['delete'])){
+            $data = array(
+                'id_users'  => $this->input->post('id_users'),
+                'id_employees' => $this->input->post('id_employees')
+            );
+            $delete =  $this->curl->simple_delete($this->API.'user', $data, array(CURLOPT_BUFFERSIZE => 10));
+            redirect(base_url().'manage-user');
         }else{
-            $delete =  $this->curl->simple_delete($this->API.'/kontak', array('id'=>$id), array(CURLOPT_BUFFERSIZE => 10)); 
-            if($delete)
-            {
-                $this->session->set_flashdata('hasil','Delete Data Berhasil');
-            }else
-            {
-               $this->session->set_flashdata('hasil','Delete Data Gagal');
-            }
-            redirect('kontak');
+            redirect(base_url().'manage-user');
         }
     }
 }

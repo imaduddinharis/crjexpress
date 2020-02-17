@@ -27,7 +27,7 @@
                                 <div class="form-group">
                                     <select class="form-control form-control-alternative" name="branch_office" id="branch_office">
                                         <?php foreach($branch_office->result as $data):?>
-                                        <option value="<?=$data->id_branch_offices?>">BO: <?=$data->village_name?>,<?=$data->district_name?>, <?=$data->city_name?>, <?=$data->province_name?></option>
+                                        <option value="<?=$data->branch_office->id_branch_offices?>">BO: <?=$data->branch_office->village_name?>,<?=$data->branch_office->district_name?>, <?=$data->branch_office->city_name?>, <?=$data->branch_office->province_name?></option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>

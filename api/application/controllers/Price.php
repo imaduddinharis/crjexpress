@@ -205,7 +205,28 @@ class Price extends REST_Controller {
 
     // DELETE:Price
     function index_delete() {
-        $this->response(array('status' => 'ERRRRR', 'message' => 'DELETE IS NOT VALID IN THIS API', 404));
+        $param = $this->delete('param');
+        $id = $this->delete('id');
+        $delete = FALSE;
+        
+        if($param == 'location'){
+            $this->db->where('id_location_price', $id);
+            $delete = $this->db->delete('location_price');
+        }else if($param == 'service'){
+            $this->db->where('id_price_rules', $id);
+            $delete = $this->db->delete('price_rules');
+        }else{
+            $this->response(array('status' => 'ERRRRR', 'message' => 'INVALID PARAM', 404));
+        }
+        
+
+        if ($delete && $id != NULL) {
+            $code = 'DDS1';
+            $this->response(array('status' => $code), 201);
+        } else {
+            $code = 'DDS0';
+            $this->response(array('status' => $code, 502));
+        }
     }
 
 }

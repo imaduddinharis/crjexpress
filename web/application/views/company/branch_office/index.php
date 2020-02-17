@@ -20,7 +20,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col">
-                            <h4 class="card-title text-uppercase text-muted mb-3">Banch Office</h4>
+                            <h4 class="card-title text-uppercase text-muted mb-3">Branch Office</h4>
                             <div class="table-responsive">
                                 <div>
                                     <table id="table_id" class="table align-items-center table-dark display hover">
@@ -30,6 +30,7 @@
                                                 <th>Office</th>
                                                 <th>Address</th>
                                                 <th>PIC</th>
+                                                <!-- <th>Action</th> -->
                                             </tr>
                                         </thead>
                                         <tbody style="color:#333">
@@ -45,6 +46,10 @@
                                                 <?php else:?>
                                                 <td><a href="<?=base_url()?>manage-user/add">create manager</a></td>
                                                 <?php endif;?>
+                                                <!-- <td class="text-right">
+                                                <span class="text-primary"><a href="#"><i class="fa fa-edit"></i></a></span>
+                                                <span class="text-primary"><a href="#"><i class="fa fa-trash"></i></a></span>
+                                                </td> -->
                                             </tr>
                                             <?php 
                                             $no++;

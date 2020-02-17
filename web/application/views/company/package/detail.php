@@ -3,6 +3,16 @@
         <div class="alert alert-secondary" role="alert">
             <span class="alert-inner--icon"><i class="fas fa-book text-blue"></i></span>
             <span class="alert-inner--text"><strong>Resi : <?= $package->resi?></strong></span>
+            <?php if($this->session->userdata('SESS_DATA')['role']== 'superuser' || $this->session->userdata('SESS_DATA')['role']== 'courier'):?>
+            <form method="post" action="<?=base_url()?>package/pickup"style="position:fixed; z-index:99999; bottom:20px; right:10px;">
+                <input type="hidden" value="<?=$package->id_packages?>" name="id_package">
+                <button class="btn icon icon-shape bg-primary text-white rounded-circle shadow" type="submit" data-toggle="tooltip" data-placement="top" name="pickup" title="Pick Up Package">
+                    <!-- <div class="icon icon-shape bg-danger text-white rounded-circle shadow"> -->
+                        <i class="ni ni-active-40"></i>
+                    <!-- </div> -->
+                </button>
+            </form>
+            <?php endif;?>
         </div>
     </div>
 </div>
@@ -77,11 +87,9 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <p class="text-muted text-sm">
-                                        <span class="h6 text-lighter mr-2">Manifested: Jakarta - (Budi)</span><br>
-                                        <span class="h6 text-lighter mr-2">On Transit: Deli Serdang - (Joko)</span><br>
-                                        <span class="h6 text-lighter mr-2">Manifested: Medan - (Joni)</span><br>
-                                        <span class="h6 text-lighter mr-2">On Process: Courier (Bejo)</span><br>
-                                        <span class="h6 text-lighter mr-2">Delivered: Recipient (Haris ND)</span>
+                                    <?php foreach($history as $data):?>
+                                        <span class="h6 text-lighter mr-2"><?=$data->status?>: <?=$data->notes?> - (<?=$data->pic?>)</span><br>
+                                    <?php endforeach;?>
                                     </p>
                                 </div>
                                 <div class="col-sm-6 text-right">
@@ -112,9 +120,11 @@
                 <span class="alert-inner--text"><strong>Current Location: Medan </strong></span>
             </div>
         </div>
-        <div class="col-sm-12 md-2 text-center">
-            <a href="<?=base_url()?>package/invoice/<?=$package->invoice?>">
-                <span class="text-uppercase h4">Invoice</span>
-            </a>
-        </div>
+        <?php if($this->session->userdata('SESS_DATA')['role']== 'superuser' || $this->session->userdata('SESS_DATA')['role']== 'agent'):?>
+            <div class="col-sm-12 md-2 text-center">
+                <a href="<?=base_url()?>package/invoice/<?=$package->invoice?>">
+                    <span class="text-uppercase h4">Invoice</span>
+                </a>
+            </div>
+        <?php endif;?>
     </div>

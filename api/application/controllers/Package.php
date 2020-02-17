@@ -10,7 +10,7 @@ class Package extends REST_Controller {
     function __construct($config = 'rest') {
         parent::__construct($config);
         $this->load->database();
-        $this->BASE_URL = 'https://crjexpress.id/';
+        $this->BASE_URL = 'https://api.crjexpress.id/';
     }
 
     // GET:Package || GET:Package/{id}
@@ -18,9 +18,98 @@ class Package extends REST_Controller {
         $id = $this->get('id_packages');
         $invoice = $this->get('invoice');
         $resi = $this->get('resi');
+        $bo = $this->get('bo');
+        $pic = $this->get('pic');
         
         $code = '';
-        if ($id == '' && $invoice == '' && $resi == '') {
+        if ($id == '' && $invoice == '' && $resi == '' && $bo != '') {
+            $this->db->where('locations.branch_office',$this->get('bo'));
+            $this->db->select('packages.id_packages,
+                                packages.package_type,
+                                packages.packaging_type,
+                                packages.package_notes,
+                                packages.weight,
+                                packages.insurance,
+                                transactions.resi,
+                                transactions.invoice,
+                                transactions.sender,
+                                transactions.recipient,
+                                transactions.price,
+                                transactions.status,
+                                transactions.sender_phone,
+                                transactions.sender_mail,
+                                transactions.recipient_phone,
+                                transactions.recipient_mail,
+                                transactions.qrcode,
+                                service.service_name,
+                                service.description as service_description,
+                                locations.branch_office,
+                                locations.dest_province,
+                                province.name as province_name,
+                                locations.dest_city,
+                                city.name as city_name,
+                                locations.dest_district,
+                                district.name as district_name,
+                                locations.dest_village,
+                                village.name as village_name,
+                                locations.detail
+                                ');
+            $this->db->from('packages');
+            $this->db->join('transactions', 'transactions.id_packages = packages.id_packages', 'left');
+            $this->db->join('locations', 'locations.id_packages = packages.id_packages', 'left');
+            $this->db->join('province', 'province.id_province = locations.dest_province', 'left');
+            $this->db->join('city', 'city.id_city = locations.dest_city', 'left');
+            $this->db->join('district', 'district.id_district = locations.dest_district', 'left');
+            $this->db->join('village', 'village.id_village = locations.dest_village', 'left');
+            $this->db->join('service', 'service.id_service = transactions.service', 'left');
+            $this->db->order_by('packages.created_at','DESC');
+            $response_data = $this->db->get()->result();
+            // $response_data = $this->db->get('roles')->result();
+        }else if ($id == '' && $invoice == '' && $resi == '' && $pic != '') {
+            $this->db->where('current_status.pic',$pic);
+            $this->db->select('packages.id_packages,
+                                packages.package_type,
+                                packages.packaging_type,
+                                packages.package_notes,
+                                packages.weight,
+                                packages.insurance,
+                                transactions.resi,
+                                transactions.invoice,
+                                transactions.sender,
+                                transactions.recipient,
+                                transactions.price,
+                                transactions.status,
+                                transactions.sender_phone,
+                                transactions.sender_mail,
+                                transactions.recipient_phone,
+                                transactions.recipient_mail,
+                                transactions.qrcode,
+                                service.service_name,
+                                service.description as service_description,
+                                locations.branch_office,
+                                locations.dest_province,
+                                province.name as province_name,
+                                locations.dest_city,
+                                city.name as city_name,
+                                locations.dest_district,
+                                district.name as district_name,
+                                locations.dest_village,
+                                village.name as village_name,
+                                locations.detail
+                                ');
+            $this->db->from('packages');
+            $this->db->join('current_status', 'current_status.id_packages = packages.id_packages', 'left');
+            $this->db->join('transactions', 'transactions.id_packages = packages.id_packages', 'left');
+            $this->db->join('locations', 'locations.id_packages = packages.id_packages', 'left');
+            $this->db->join('province', 'province.id_province = locations.dest_province', 'left');
+            $this->db->join('city', 'city.id_city = locations.dest_city', 'left');
+            $this->db->join('district', 'district.id_district = locations.dest_district', 'left');
+            $this->db->join('village', 'village.id_village = locations.dest_village', 'left');
+            $this->db->join('service', 'service.id_service = transactions.service', 'left');
+            $this->db->order_by('packages.created_at','DESC');
+            $response_data = $this->db->get()->result();
+            // $response_data = $this->db->get('roles')->result();
+        }else if ($id == '' && $invoice == '' && $resi == '' && $bo == ''&& $pic == '') {
             $this->db->select('packages.id_packages,
                                 packages.package_type,
                                 packages.packaging_type,
@@ -144,6 +233,91 @@ class Package extends REST_Controller {
             $this->db->join('village', 'village.id_village = locations.dest_village', 'left');
             $this->db->join('service', 'service.id_service = transactions.service', 'left');
             $response_data = $this->db->get()->result();
+        }else if($resi != '' && $bo != '') {
+            $this->db->where('locations.branch_office',$this->get('bo'));
+            $this->db->where('transactions.resi', $resi);
+            $this->db->select('packages.id_packages,
+                                packages.package_type,
+                                packages.packaging_type,
+                                packages.package_notes,
+                                packages.weight,
+                                packages.insurance,
+                                transactions.resi,
+                                transactions.invoice,
+                                transactions.sender,
+                                transactions.recipient,
+                                transactions.price,
+                                transactions.status,
+                                transactions.sender_phone,
+                                transactions.sender_mail,
+                                transactions.recipient_phone,
+                                transactions.recipient_mail,
+                                transactions.qrcode,
+                                service.service_name,
+                                service.description as service_description,
+                                locations.branch_office,
+                                locations.dest_province,
+                                province.name as province_name,
+                                locations.dest_city,
+                                city.name as city_name,
+                                locations.dest_district,
+                                district.name as district_name,
+                                locations.dest_village,
+                                village.name as village_name,
+                                locations.detail
+                                ');
+            $this->db->from('packages');
+            $this->db->join('transactions', 'transactions.id_packages = packages.id_packages', 'left');
+            $this->db->join('locations', 'locations.id_packages = packages.id_packages', 'left');
+            $this->db->join('province', 'province.id_province = locations.dest_province', 'left');
+            $this->db->join('city', 'city.id_city = locations.dest_city', 'left');
+            $this->db->join('district', 'district.id_district = locations.dest_district', 'left');
+            $this->db->join('village', 'village.id_village = locations.dest_village', 'left');
+            $this->db->join('service', 'service.id_service = transactions.service', 'left');
+            $response_data = $this->db->get()->result();
+        }else if($resi != '' && $pic != '') {
+            $this->db->where('current_status.pic',$pic);
+            $this->db->where('transactions.resi', $resi);
+            $this->db->select('packages.id_packages,
+                                packages.package_type,
+                                packages.packaging_type,
+                                packages.package_notes,
+                                packages.weight,
+                                packages.insurance,
+                                transactions.resi,
+                                transactions.invoice,
+                                transactions.sender,
+                                transactions.recipient,
+                                transactions.price,
+                                transactions.status,
+                                transactions.sender_phone,
+                                transactions.sender_mail,
+                                transactions.recipient_phone,
+                                transactions.recipient_mail,
+                                transactions.qrcode,
+                                service.service_name,
+                                service.description as service_description,
+                                locations.branch_office,
+                                locations.dest_province,
+                                province.name as province_name,
+                                locations.dest_city,
+                                city.name as city_name,
+                                locations.dest_district,
+                                district.name as district_name,
+                                locations.dest_village,
+                                village.name as village_name,
+                                locations.detail
+                                ');
+            $this->db->from('packages');
+            $this->db->join('current_status', 'current_sttus.id_packages = packages.id_packages', 'left');
+            $this->db->join('transactions', 'transactions.id_packages = packages.id_packages', 'left');
+            $this->db->join('locations', 'locations.id_packages = packages.id_packages', 'left');
+            $this->db->join('province', 'province.id_province = locations.dest_province', 'left');
+            $this->db->join('city', 'city.id_city = locations.dest_city', 'left');
+            $this->db->join('district', 'district.id_district = locations.dest_district', 'left');
+            $this->db->join('village', 'village.id_village = locations.dest_village', 'left');
+            $this->db->join('service', 'service.id_service = transactions.service', 'left');
+            $response_data = $this->db->get()->result();
         }else if($resi != '') {
             $this->db->where('transactions.resi', $resi);
             $this->db->select('packages.id_packages,
@@ -230,7 +404,7 @@ class Package extends REST_Controller {
  
         $image_name=md5('resi-id:'.$id_package).'.png'; //buat name dari qr code sesuai dengan nim
  
-        $params['data'] = $this->BASE_URL.'tracking-package?rn='.md5('resi-id:'.$id_package); //data yang akan di jadikan QR CODE
+        $params['data'] = 'https://crjexpress.id/tracking-crj-express?rn='.md5('resi-id:'.$id_package); //data yang akan di jadikan QR CODE
         $params['level'] = 'H'; //H=High
         $params['size'] = 10;
         $params['savename'] = FCPATH.$config['imagedir'].$image_name; //simpan image QR CODE ke folder assets/images/
@@ -276,7 +450,21 @@ class Package extends REST_Controller {
         );
 
         $post_location = $this->db->insert('locations', $data['location']);
-        
+
+        $this->db->where('branch_offices.id_branch_offices',$post['branch_office']);
+        $this->db->select('city.name as city_name');
+        $this->db->from('city');
+        $this->db->join('branch_offices', 'branch_offices.city = city.id_city', 'left');
+        $getCity = $this->db->get()->result();
+
+        $datastatus = array(
+            'id_packages'   => $id_package,
+            'status'        => 'Manifested',
+            'pic'           => $this->post('pic'),
+            'notes'         => 'Barang telah diterima agent '.$getCity[0]->city_name
+        );
+        $insert = $this->db->insert('current_status', $datastatus);
+
         if ($post_package && $post_customer && $post_location) {
             $code = 'PDS1';
             $this->response(array('status' => $code, 'result' => $data, 200));

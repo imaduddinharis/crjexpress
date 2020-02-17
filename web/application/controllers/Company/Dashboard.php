@@ -38,70 +38,24 @@ Class Dashboard extends CI_Controller{
         $data['asset'] = $this->asset;
         
         // $data['header']=$this->load->view('templates/header',$data, true);
+        $data['package'] = count(json_decode($this->curl->simple_get($this->API.'package'))->result);
+        $data['customer'] = count(json_decode($this->curl->simple_get($this->API.'ppob_customer'))->result);
+        $data['employee'] = count(json_decode($this->curl->simple_get($this->API.'user'))->result);
+        $data['trx'] = count(json_decode($this->curl->simple_get($this->API.'ppob_transaction'))->result);
+        $data['bo'] = count(json_decode($this->curl->simple_get($this->API.'branch_office'))->result);
+        $data['area'] = count(json_decode($this->curl->simple_get($this->API.'area'))->result);
+
+        $data_mp = array(
+            'commands'  => 'balance',
+            'username'  => '081210113977',
+            'sign'      => md5('0812101139773345e28cae81da00334bl')
+        );
+        $post_mp = json_decode($this->curl->simple_post('https://api.mobilepulsa.net/v1/legacy/index', json_encode($data_mp), array(CURLOPT_BUFFERSIZE => 10)));
+        $data['balance'] = $post_mp->data->balance;
+        $data['cust_balance'] = json_decode($this->curl->simple_get($this->API.'ppob_balance?action=countall'))->result[0]->balance;
         $data['content']=$this->load->view('company/dashboard/index',$data, true);
         // $data['footer']=$this->load->view('templates/footer',$data, true);
 		
         $this->load->view('company/template/index',$data);
-    }
-
-    // insert data kontak
-    function create(){
-        if(isset($_POST['submit'])){
-            $data = array(
-                'id'       =>  $this->input->post('id'),
-                'nama'      =>  $this->input->post('nama'),
-                'nomor'=>  $this->input->post('nomor'));
-            $insert =  $this->curl->simple_post($this->API.'/kontak', $data, array(CURLOPT_BUFFERSIZE => 10)); 
-            if($insert)
-            {
-                $this->session->set_flashdata('hasil','Insert Data Berhasil');
-            }else
-            {
-               $this->session->set_flashdata('hasil','Insert Data Gagal');
-            }
-            redirect('kontak');
-        }else{
-            $this->load->view('kontak/create');
-        }
-    }
-
-    // edit data kontak
-    function edit(){
-        if(isset($_POST['submit'])){
-            $data = array(
-                'id'       =>  $this->input->post('id'),
-                'nama'      =>  $this->input->post('nama'),
-                'nomor'=>  $this->input->post('nomor'));
-            $update =  $this->curl->simple_put($this->API.'/kontak', $data, array(CURLOPT_BUFFERSIZE => 10)); 
-            if($update)
-            {
-                $this->session->set_flashdata('hasil','Update Data Berhasil');
-            }else
-            {
-               $this->session->set_flashdata('hasil','Update Data Gagal');
-            }
-            redirect('kontak');
-        }else{
-            $params = array('id'=>  $this->uri->segment(3));
-            $data['datakontak'] = json_decode($this->curl->simple_get($this->API.'/kontak',$params));
-            $this->load->view('kontak/edit',$data);
-        }
-    }
-
-    // delete data kontak
-    function delete($id){
-        if(empty($id)){
-            redirect('kontak');
-        }else{
-            $delete =  $this->curl->simple_delete($this->API.'/kontak', array('id'=>$id), array(CURLOPT_BUFFERSIZE => 10)); 
-            if($delete)
-            {
-                $this->session->set_flashdata('hasil','Delete Data Berhasil');
-            }else
-            {
-               $this->session->set_flashdata('hasil','Delete Data Gagal');
-            }
-            redirect('kontak');
-        }
     }
 }

@@ -47,8 +47,7 @@
           <a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <div class="media align-items-center">
               <span class="avatar avatar-sm rounded-circle">
-                <img alt="Image placeholder" src="<?=$asset?>img/theme/team-1-800x800.jpg
-">
+                <img alt="Image placeholder" src="<?=$asset?>img/theme/team-1-800x800.jpg">
               </span>
             </div>
           </a>
@@ -112,22 +111,31 @@
         <!-- Navigation -->
         <ul class="navbar-nav">
           <li class="nav-item  class=" active" ">
-          <a class=" nav-link active " href="<?=base_url()?>"> <i class="ni ni-tv-2 text-primary"></i> Dashboard
+          <a class=" nav-link active " href="<?=base_url()?>dashboard"> <i class="ni ni-tv-2 text-primary"></i> Dashboard
             </a>
           </li>
-          <?php if($this->session->userdata('SESS_DATA')['role']== 'superuser' || $this->session->userdata('SESS_DATA')['role']== 'manager'):?>
+          <?php if($this->session->userdata('SESS_DATA')['role']== 'superuser' || $this->session->userdata('SESS_DATA')['role']== 'manager' || $this->session->userdata('SESS_DATA')['role']== 'manager-area'):?>
           <li class="nav-item">
             <a class="nav-link " href="<?=base_url()?>manage-user">
               <i class="fas fa-users text-blue"></i> Manage User
             </a>
           </li>
           <?php endif;?>
+          <?php if($this->session->userdata('SESS_DATA')['role']== 'superuser' || $this->session->userdata('SESS_DATA')['role']== 'manager' || $this->session->userdata('SESS_DATA')['role']== 'manager-area' || $this->session->userdata('SESS_DATA')['role']== 'agent'):?>
           <li class="nav-item">
             <a class="nav-link " href="<?=base_url()?>package">
               <i class="ni ni-app text-blue"></i> Package
             </a>
           </li>
-          <?php if($this->session->userdata('SESS_DATA')['role']== 'superuser' || $this->session->userdata('SESS_DATA')['role']== 'manager'):?>
+          <?php endif;?>
+          <?php if($this->session->userdata('SESS_DATA')['role']== 'superuser' || $this->session->userdata('SESS_DATA')['role']== 'courier' || $this->session->userdata('SESS_DATA')['role']== 'agent'):?>
+          <li class="nav-item">
+            <a class="nav-link " href="<?=base_url()?>pickup-package">
+              <i class="ni ni-app text-blue"></i> Pickup Package
+            </a>
+          </li>
+          <?php endif;?>
+          <?php if($this->session->userdata('SESS_DATA')['role']== 'superuser'):?>
           <li class="nav-item">
             <a class="nav-link " href="<?=base_url()?>price-rules/location">
               <i class="ni ni-square-pin text-red"></i> Price by Location
@@ -138,12 +146,41 @@
               <i class="fas fa-truck text-red"></i> Price by Service
             </a>
           </li>
+          <?php endif;?>
+          <?php if($this->session->userdata('SESS_DATA')['role']== 'superuser' || $this->session->userdata('SESS_DATA')['role']== 'manager-area'):?>
           <li class="nav-item">
             <a class="nav-link" href="<?=base_url()?>branch-office">
               <i class="fas fa-building text-red"></i> Branch Office
             </a>
           </li>
           <?php endif;?>
+          <?php if($this->session->userdata('SESS_DATA')['role']== 'superuser'):?>
+          <li class="nav-item">
+            <a class="nav-link" href="<?=base_url()?>office-area">
+              <i class="fas fa-building text-red"></i> Office Area
+            </a>
+          </li>
+          <?php endif;?>
+          <?php if($this->session->userdata('SESS_DATA')['role']== 'manager-area'):?>
+          <li class="nav-item">
+            <a class="nav-link" href="<?=base_url()?>office-area/detail/<?=$this->session->userdata('SESS_DATA')['branch_office']?>">
+              <i class="fas fa-building text-red"></i> Office Area
+            </a>
+          </li>
+          <?php endif;?>
+          <?php if($this->session->userdata('SESS_DATA')['role']== 'superuser' || $this->session->userdata('SESS_DATA')['role']== 'cs'):?>
+          <li class="nav-item">
+            <a class="nav-link" href="<?=base_url()?>ppob-transaction">
+              <i class="fas fa-money-check-alt text-red"></i> PPOB Transaction
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="<?=base_url()?>ppob-customer">
+              <i class="fas fa-users text-red"></i> PPOB Customer
+            </a>
+          </li>
+          <?php endif;?>
+          
         </ul>
         <!-- Divider -->
         <hr class="my-3">

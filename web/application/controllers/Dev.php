@@ -34,7 +34,7 @@ Class Dev extends CI_Controller{
 
     // menampilkan data kontak
     function index(){
-        $data['title'] = 'Dashboard';
+        $data['title'] = 'CRJExpress';
         $data['asset'] = $this->asset;
         
         // $data['header']=$this->load->view('templates/header',$data, true);

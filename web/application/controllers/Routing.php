@@ -27,9 +27,15 @@ Class Routing extends CI_Controller{
     function index(){
         if($this->session->userdata('IS_LOGIN') == TRUE){
             redirect(base_url().'dashboard');
-        }else{
+        }else if($this->session->userdata('IS_LOGIN_PPOB') == TRUE){
+            redirect(base_url().'home');
+        }else if($this->session->userdata('IS_LOGIN') == FALSE){
             redirect(base_url().'auth');
+        }else{
+            redirect(base_url().'home');
         }
-        
+    }
+    function home(){
+        redirect(base_url().'home');
     }
 }

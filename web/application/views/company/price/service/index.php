@@ -31,6 +31,7 @@
                                                 <th>Description</th>
                                                 <th>Insurance</th>
                                                 <th>Price</th>
+                                                <!-- <th>Action</th> -->
                                             </tr>
                                         </thead>
                                         <tbody style="color:#333">
@@ -43,6 +44,10 @@
                                                 <td><?=$data->description?></td>
                                                 <td><?=$data->insurance?></td>
                                                 <td>Rp. <?=number_format($data->price,0)?></td>
+                                                <!-- <td class="text-right">
+                                                <span class="text-primary"><a href="#"><i class="fa fa-edit"></i></a></span>
+                                                <span class="text-primary"><a href="#"><i class="fa fa-trash"></i></a></span>
+                                                </td> -->
                                             </tr>
                                             <?php 
                                             $no++;

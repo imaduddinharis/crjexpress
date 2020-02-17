@@ -62,11 +62,24 @@ Class Auth extends CI_Controller{
             // return false;
             if($login->status == 'BAS1')
             {
+                $role = '';                
+                if($login->result->account[0]->role == 'manager'){
+                    $cek = json_decode($this->curl->simple_get($this->API.'area?id='.$login->result->detail[0]->branch_office));
+                    if(count($cek->result)>0){
+                        $role = 'manager-area';
+                    }else{
+                        $role = 'manager';
+                    }
+                }else{
+                    $role = $login->result->account[0]->role;
+                }
+                // var_dump($login);
+                // return false;
                 $data = array(
                     'status'        => $login->status,
                     'token'         => $login->token,
                     'username'      => $login->result->account[0]->username,
-                    'role'          => $login->result->account[0]->role,
+                    'role'          => $role,
                     'branch_office' => $login->result->detail[0]->branch_office
                 );
                 $this->session->set_userdata('SESS_DATA',$data);

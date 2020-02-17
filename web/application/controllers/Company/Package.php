@@ -38,25 +38,132 @@ Class Package extends CI_Controller{
         $data['asset'] = $this->asset;
         
         if(isset($_GET['search']) && $_GET['search'] != ""){
-            $data['package'] = json_decode($this->curl->simple_get($this->API.'package?resi='.$_GET['search']));
+            $data['package'] = json_decode($this->curl->simple_get($this->API.'package?bo='.$this->session->userdata('SESS_DATA')['branch_office'].'&resi='.$_GET['search']));
         }else{
-            $data['package'] = json_decode($this->curl->simple_get($this->API.'package'));
+            $data['package'] = json_decode($this->curl->simple_get($this->API.'package?bo='.$this->session->userdata('SESS_DATA')['branch_office']));
         }
         $data['content']=$this->load->view('company/package/index',$data, true);
+        $this->load->view('company/template/index',$data);
+    }
+    function picked(){
+        $data['title'] = 'Package';
+        $data['asset'] = $this->asset;
+        
+        
+        if($this->session->userdata('SESS_DATA')['role'] == 'courier'){
+            if(isset($_GET['search']) && $_GET['search'] != ""){
+                $data['list'] = json_decode($this->curl->simple_get($this->API.'package?pic='.$this->session->userdata('SESS_DATA')['username'].'&resi='.$_GET['search']));
+                $data['package'] = json_decode($this->curl->simple_get($this->API.'package?resi='.$_GET['search']));
+            }else{
+                $data['list'] = json_decode($this->curl->simple_get($this->API.'package?pic='.$this->session->userdata('SESS_DATA')['username']));
+                $data['package'] = json_decode($this->curl->simple_get($this->API.'package'));
+            }
+        }else{
+            if(isset($_GET['search']) && $_GET['search'] != ""){
+                $data['list'] = json_decode($this->curl->simple_get($this->API.'package'));
+                $data['package'] = json_decode($this->curl->simple_get($this->API.'package?resi='.$_GET['search']));
+            }else{
+                $data['list'] = json_decode($this->curl->simple_get($this->API.'package'));
+                $data['package'] = json_decode($this->curl->simple_get($this->API.'package'));
+            }
+        }
+        $data['content']=$this->load->view('company/package/pickup',$data, true);
         $this->load->view('company/template/index',$data);
     }
 
     // menampilkan data kontak
     function detail($id){
+        
         $data['title'] = 'Package - Detail';
         $data['asset'] = $this->asset;
         
         $data['package'] = json_decode($this->curl->simple_get($this->API.'package?id_packages='.$id))->result[0];
+        $data['history'] = json_decode($this->curl->simple_get($this->API.'history?id_packages='.$id))->result;
         $data['branch'] = json_decode($this->curl->simple_get($this->API.'branch_office?id='.$data['package']->branch_office))->result[0];
         $data['content']=$this->load->view('company/package/detail',$data, true);
         // $data['footer']=$this->load->view('templates/footer',$data, true);
 		
         $this->load->view('company/template/index',$data);
+    }
+
+    function pickup(){
+        if(isset($_POST['pickup'])){
+            $data = array(
+                'id_packages'       =>  $this->input->post('id_package'),
+                'username'          =>  $this->session->userdata('SESS_DATA')['username'],
+                'action'            => 'pickup'                
+            );
+            // var_dump($data);
+            // return false;
+            $insert =  json_decode($this->curl->simple_post($this->API.'history', $data, array(CURLOPT_BUFFERSIZE => 10))); 
+            // var_dump($insert);
+            // return false;
+            if($insert->status == 'PDS1')
+            {
+                // $invoice = $insert->result->customer->invoice;
+                // var_dump($invoice);
+                redirect(base_url().'pickup-package');
+            }else
+            {
+                redirect(base_url().'package/detail/'.$this->input->post('id_package'));
+            }
+            
+        }else{
+            redirect(base_url().'package/new-package');
+        }
+    }
+    function drop(){
+        if(isset($_POST['drop'])){
+            $data = array(
+                'id_packages'       =>  $this->input->post('id_package'),
+                'username'          =>  $this->session->userdata('SESS_DATA')['username'],
+                'action'            => 'drop'                
+            );
+            // var_dump($data);
+            // return false;
+            $insert =  json_decode($this->curl->simple_post($this->API.'history', $data, array(CURLOPT_BUFFERSIZE => 10))); 
+            // var_dump($insert);
+            // return false;
+            if($insert->status == 'PDS1')
+            {
+                // $invoice = $insert->result->customer->invoice;
+                // var_dump($invoice);
+                redirect(base_url().'pickup-package');
+            }else
+            {
+                redirect(base_url().'package/detail/'.$this->input->post('id_package'));
+            }
+            
+        }else{
+            redirect(base_url().'package/new-package');
+        }
+    }
+    function receive(){
+        if(isset($_POST['drop'])){
+            $data = array(
+                'id_packages'       =>  $this->input->post('id_package'),
+                'username'          =>  $this->session->userdata('SESS_DATA')['username'],
+                'recipient'         =>  $this->input->post('recipient'),
+                'action'            => 'received'                
+            );
+            // var_dump($data);
+            // return false;
+            $insert =  json_decode($this->curl->simple_post($this->API.'history', $data, array(CURLOPT_BUFFERSIZE => 10))); 
+            // var_dump($insert);
+            // return false;
+            if($insert->status == 'PDS1')
+            {
+                // $invoice = $insert->result->customer->invoice;
+                // var_dump($invoice);
+                redirect(base_url().'pickup-package');
+            }else
+            {
+                redirect(base_url().'package/detail/'.$this->input->post('id_package'));
+            }
+            
+        }else{
+            redirect(base_url().'package/new-package');
+        }
     }
 
     // menampilkan data kontak
@@ -96,6 +203,7 @@ Class Package extends CI_Controller{
                 'recipient_mail'    =>  $this->input->post('recipient_mail'),
                 'service'           =>  $this->input->post('service'),
                 'insurance'         =>  $insurance,
+                'pic'               =>  $this->session->userdata('SESS_DATA')['username'],
                 'dest_province'     =>  $this->input->post('province'),
                 'dest_city'         =>  $this->input->post('city'),
                 'dest_district'     =>  $this->input->post('district'),

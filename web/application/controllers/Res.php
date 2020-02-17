@@ -12,7 +12,7 @@ class Res
         if($this->SERVER == 'LOCAL'):
             $this->API = 'http://localhost:9000/';
         elseif($this->SERVER == 'HOSTING'):
-            $this->API = 'https://api.crjexpress.id/';
+            $this->API = 'https://api.development.crjexpress.id/';
         else:
             $this->API = 'http://localhost:9000/';
         endif;

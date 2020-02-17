@@ -91,7 +91,7 @@ class User extends REST_Controller {
     // POST:user
     function index_post() {
         $code = '';
-        $role = array('agent','manager','courier');
+        $role = array('agent','manager','courier','cs');
         if(in_array($this->post('role'),$role)){
             $data['account'] = array(
                         'username'  => $this->post('username'),
@@ -156,11 +156,19 @@ class User extends REST_Controller {
 
     // DELETE:User
     function index_delete() {
-        $id = $this->delete('id');
+        $id_users = $this->delete('id_users');
+        $id_employees = $this->delete('id_employees');
         
-        $this->db->where('id_users', $id);
+        $this->db->where('id_users', $id_users);
         $delete = $this->db->delete('users');
-        if ($delete && $id != NULL) {
+
+        $this->db->where('id_employees', $id_employees);
+        $deletes = $this->db->delete('employees');
+
+        $this->db->where('id_employees', $id_employees);
+        $deletess = $this->db->delete('employees_detail');
+
+        if ($delete && $deletes && $deletess && $id_users != NULL && $id_employees != NULL ) {
             $code = 'DDS1';
             $this->response(array('status' => $code), 201);
         } else {

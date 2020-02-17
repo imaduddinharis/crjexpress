@@ -32,6 +32,7 @@
                                                 <th>Destination</th>
                                                 <th>City</th>
                                                 <th>Price</th>
+                                                <!-- <th>Action</th> -->
                                             </tr>
                                         </thead>
                                         <tbody style="color:#333">
@@ -45,6 +46,10 @@
                                                 <td><?=$data->location_price->destination?></td>
                                                 <td><?=$data->dest_detail[0]->city?></td>
                                                 <td>Rp. <?=number_format($data->location_price->price,0)?></td>
+                                                <!-- <td class="text-right">
+                                                <span class="text-primary"><a href="#"><i class="fa fa-edit"></i></a></span>
+                                                <span class="text-primary"><a href="#"><i class="fa fa-trash"></i></a></span>
+                                                </td> -->
                                             </tr>
                                             <?php 
                                             $no++;
